@@ -5,7 +5,8 @@ from datetime import datetime
 from pytz import timezone
 import pytz
 
-my_timezone = timezone('US/Pacific')
+TIMEZONE_UTC = timezone('UTC')
+TIMEZONE_PST = timezone('US/Pacific')
 
 
 def main(csv_file):
@@ -24,15 +25,18 @@ def main(csv_file):
     utc_hdr = headers[0]
     utc_col = column[utc_hdr]
 
-    pst_col = []
+    date_col = []
+    time_col = []
 
     for utc in utc_col:
-        date = date_parser.parse(utc)
-        date = my_timezone.localize(date)
-        date = date.astimezone(my_timezone)
+        date_raw = date_parser.parse(utc)
+        date_utc = TIMEZONE_UTC.localize(date_raw)
+        date_pst = date_utc.astimezone(TIMEZONE_PST)
+        date_str = str(date_pst.date())
+        time_str = str(date_pst.time())
 
-        # print 'Local date & time is  :', date.strftime(date_format)
-        pst_col.append(date)
+        date_col.append(date_str)
+        time_col.append(time_str)
 
     print('done.')
 
