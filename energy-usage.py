@@ -38,7 +38,39 @@ def main(csv_file):
         date_col.append(date_str)
         time_col.append(time_str)
 
-    print('done.')
+    # Compute totals per day
+
+    column2 = {}
+    for h in headers:
+        column2[h] = []
+
+    n = len(date_col)
+    j = -1
+    d = None
+    for i in range(n):
+        if d != date_col[i]:
+            d = date_col[i]
+            j += 1
+
+            column2[utc_hdr].append(d)
+            for h in headers[1:]:
+                column2[h].append(0.0)
+
+        for h in headers[1:]:
+            column2[h][j] += float(column[h][i])
+
+    n = len(column2[utc_hdr])
+
+    line = '"Date"'
+    for h in headers[1:]:
+        line += ',"{}"'.format(h)
+    print(line)
+
+    for i in range(n):
+        line = '"{}"'.format(column2[utc_hdr][i])
+        for h in headers[1:]:
+            line += ',{:.3f}'.format(column2[h][i])
+        print(line)
 
 
 if __name__ == "__main__":
