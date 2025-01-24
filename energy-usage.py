@@ -1,9 +1,7 @@
 import argparse
 import csv
 from dateutil import parser as date_parser
-from datetime import datetime
 from pytz import timezone
-import pytz
 
 TIMEZONE_UTC = timezone('UTC')
 TIMEZONE_PST = timezone('US/Pacific')
